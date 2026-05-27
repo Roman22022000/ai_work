@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no"
+/>
+
+<title>Telegram Booking App</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #1e3a8a 35%,
+        #2563eb 65%,
+        #38bdf8 100%
+    );
+
+    padding:16px;
+
+    color:white;
+
+    overflow-x:hidden;
+}
+
+.container{
+
+    width:100%;
+
+    max-width:520px;
+
+    margin:0 auto;
+}
+
+.card{
+
+    background:rgba(17,24,39,0.75);
+
+    backdrop-filter:blur(14px);
+
+    border-radius:24px;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    padding:24px;
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.35);
+}
+
+h1{
+
+    text-align:center;
+
+    margin-bottom:24px;
+
+    font-size:28px;
+}
+
+label{
+
+    display:block;
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    color:#dbeafe;
+
+    font-size:14px;
+}
+
+input{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    font-size:16px;
+}
+
+input::placeholder{
+
+    color:#cbd5e1;
+}
+
+input:focus{
+
+    outline:none;
+
+    border:1px solid #60a5fa;
+
+    background:rgba(255,255,255,0.12);
+}
+
+.submit{
+
+    width:100%;
+
+    margin-top:28px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        90deg,
+        #2563eb,
+        #3b82f6,
+        #38bdf8
+    );
+
+    transition:0.25s;
+}
+
+.submit:hover{
+
+    transform:translateY(-2px);
+}
+
+.success{
+
+    display:none;
+
+    margin-top:18px;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    background:rgba(34,197,94,0.2);
+
+    border:1px solid rgba(34,197,94,0.4);
+
+    color:#dcfce7;
+
+    text-align:center;
+}
+
+.game-btn{
+
+    width:100%;
+
+    margin-top:16px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    color:white;
+
+    display:none;
+
+    background:
+    linear-gradient(
+        90deg,
+        #7c3aed,
+        #9333ea,
+        #c084fc
+    );
+
+    transition:0.25s;
+}
+
+.game-btn:hover{
+
+    transform:translateY(-2px);
+}
+
+.game-wrapper{
+
+    display:none;
+
+    margin-top:24px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:#101010;
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.game-title{
+
+    padding:18px;
+
+    text-align:center;
+
+    color:white;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+    background:rgba(255,255,255,0.04);
+}
+
+.info{
+
+    padding:12px;
+
+    color:white;
+
+    background:rgba(0,0,0,0.45);
+
+    text-align:center;
+
+    font-size:13px;
+}
+
+canvas{
+
+    display:block;
+
+    width:100%;
+
+    height:420px;
+
+    background:#101010;
+
+    touch-action:none;
+}
+
+@media(max-width:480px){
+
+    h1{
+        font-size:24px;
+    }
+
+    canvas{
+        height:360px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Бронирование</h1>
+
+        <form id="bookingForm">
+
+            <label>Имя</label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Введите имя"
+                required
+            >
+
+            <label>Номер телефона</label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="+7 999 999 99 99"
+                required
+            >
+
+            <label>Адрес</label>
+
+            <input
+                type="text"
+                id="address"
+                placeholder="Введите адрес"
+                required
+            >
+
+            <label>Дата</label>
+
+            <input
+                type="date"
+                id="date"
+                required
+            >
+
+            <label>Время</label>
+
+            <input
+                type="time"
+                id="time"
+                required
+            >
+
+            <button
+                type="submit"
+                class="submit"
+            >
+                Забронировать
+            </button>
+
+        </form>
+
+        <div
+            class="success"
+            id="success"
+        >
+            Бронирование успешно отправлено
+        </div>
+
+        <button
+            class="game-btn"
+            id="openGame"
+        >
+            А пока можно поиграть
+        </button>
+
+        <div
+            class="game-wrapper"
+            id="gameWrapper"
+        >
+
+            <div class="game-title">
+
+                Игра сделана без знаний языка программирования,
+                лишь по текстовому запросу
+
+            </div>
+
+            <div class="info">
+
+                Проводи несколькими пальцами одновременно
+
+            </div>
+
+            <canvas id="canvas"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const tg = window.Telegram.WebApp;
+
+tg.expand();
+
+document
+.getElementById("bookingForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const bookingData = {
+
+        name:
+        document.getElementById("name").value,
+
+        phone:
+        document.getElementById("phone").value,
+
+        address:
+        document.getElementById("address").value,
+
+        date:
+        document.getElementById("date").value,
+
+        time:
+        document.getElementById("time").value
+    };
+
+    console.log(bookingData);
+
+    tg.sendData(
+        JSON.stringify(bookingData)
+    );
+
+    document
+    .getElementById("success")
+    .style.display = "block";
+
+    document
+    .getElementById("openGame")
+    .style.display = "block";
+});
+
+const openGameBtn =
+document.getElementById("openGame");
+
+const gameWrapper =
+document.getElementById("gameWrapper");
+
+openGameBtn.addEventListener("click",()=>{
+
+    gameWrapper.style.display = "block";
+
+    resize();
+});
+
+
+// ===== ИГРА =====
+
+const canvas =
+document.getElementById("canvas");
+
+const ctx =
+canvas.getContext("2d");
+
+let w,h,dpr;
+
+let cellSize;
+let cols;
+let rows;
+
+function resize(){
+
+    dpr =
+    window.devicePixelRatio || 1;
+
+    w = canvas.offsetWidth;
+    h = canvas.offsetHeight;
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    if(w < 600){
+
+        cellSize = 30;
+
+    }else{
+
+        cellSize = 42;
+    }
+
+    cols = Math.ceil(w / cellSize);
+    rows = Math.ceil(h / cellSize);
+
+    draw();
+}
+
+const colors = [
+
+"#ff4d6d",
+"#ff914d",
+"#ffd84d",
+"#6dff4d",
+"#4dffd2",
+"#4da6ff",
+"#7a6dff",
+"#c24dff"
+
+];
+
+const notes = [
+
+130.81,
+146.83,
+164.81,
+174.61,
+196.00,
+220.00,
+246.94,
+261.63,
+293.66,
+329.63,
+349.23,
+392.00,
+440.00,
+523.25
+
+];
+
+const activePointers =
+new Map();
+
+function draw(){
+
+    ctx.clearRect(0,0,w,h);
+
+    for(let y=0;y<rows;y++){
+
+        for(let x=0;x<cols;x++){
+
+            const px =
+            x * cellSize;
+
+            const py =
+            y * cellSize;
+
+            let active = false;
+
+            activePointers.forEach((p)=>{
+
+                const cx =
+                px + cellSize/2;
+
+                const cy =
+                py + cellSize/2;
+
+                const dist =
+                Math.hypot(
+                    p.x - cx,
+                    p.y - cy
+                );
+
+                if(
+                    dist < cellSize * 0.9
+                ){
+                    active = true;
+                }
+            });
+
+            ctx.fillStyle = active
+            ? colors[
+                (x+y)%colors.length
+            ]
+            : "#181818";
+
+            ctx.fillRect(
+                px,
+                py,
+                cellSize,
+                cellSize
+            );
+
+            ctx.strokeStyle = active
+            ? "rgba(255,255,255,0.35)"
+            : "rgba(255,255,255,0.05)";
+
+            ctx.strokeRect(
+                px,
+                py,
+                cellSize,
+                cellSize
+            );
+        }
+    }
+}
+
+const AudioContextClass =
+
+window.AudioContext ||
+window.webkitAudioContext;
+
+const audioCtx =
+new AudioContextClass();
+
+function playTone(freq){
+
+    const osc =
+    audioCtx.createOscillator();
+
+    const gain =
+    audioCtx.createGain();
+
+    osc.type = "triangle";
+
+    osc.frequency.value = freq;
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        audioCtx.currentTime
+    );
+
+    gain.gain
+    .exponentialRampToValueAtTime(
+        0.18,
+        audioCtx.currentTime + 0.01
+    );
+
+    gain.gain
+    .exponentialRampToValueAtTime(
+        0.0001,
+        audioCtx.currentTime + 0.25
+    );
+
+    osc.connect(gain);
+
+    gain.connect(
+        audioCtx.destination
+    );
+
+    osc.start();
+
+    osc.stop(
+        audioCtx.currentTime + 0.3
+    );
+}
+
+const playedCells =
+new Set();
+
+function triggerCell(x,y){
+
+    const gx =
+    Math.floor(x / cellSize);
+
+    const gy =
+    Math.floor(y / cellSize);
+
+    const key =
+    gx + "_" + gy;
+
+    if(!playedCells.has(key)){
+
+        playedCells.add(key);
+
+        const noteIndex =
+
+        (gx + gy)
+        % notes.length;
+
+        playTone(
+            notes[noteIndex]
+        );
+
+        setTimeout(()=>{
+
+            playedCells.delete(key);
+
+        },60);
+    }
+}
+
+function updatePointer(id,x,y){
+
+    activePointers.set(id,{x,y});
+
+    triggerCell(x,y);
+
+    draw();
+}
+
+function removePointer(id){
+
+    activePointers.delete(id);
+
+    draw();
+}
+
+canvas.addEventListener(
+"pointerdown",
+(e)=>{
+
+    e.preventDefault();
+
+    if(
+        audioCtx.state ===
+        "suspended"
+    ){
+        audioCtx.resume();
+    }
+
+    canvas.setPointerCapture(
+        e.pointerId
+    );
+
+    updatePointer(
+        e.pointerId,
+        e.clientX,
+        e.clientY
+    );
+});
+
+canvas.addEventListener(
+"pointermove",
+(e)=>{
+
+    if(
+        activePointers.has(
+            e.pointerId
+        )
+    ){
+
+        updatePointer(
+            e.pointerId,
+            e.clientX,
+            e.clientY
+        );
+    }
+});
+
+canvas.addEventListener(
+"pointerup",
+(e)=>{
+
+    removePointer(
+        e.pointerId
+    );
+});
+
+canvas.addEventListener(
+"pointercancel",
+(e)=>{
+
+    removePointer(
+        e.pointerId
+    );
+});
+
+window.addEventListener(
+"resize",
+resize
+);
+
+resize();
+
+</script>
+
+</body>
+</html>
