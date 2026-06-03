@@ -132,110 +132,81 @@ body{
 <div class="container">
 
     <div class="card">
-
-        <img src="video.png">
-
+        <img src="./video.png" alt="Видео">
         <div class="overlay"></div>
-
         <button class="favorite">☆</button>
-
         <div class="content">
             <div class="title">
                 Видео<br>Генерация видео
             </div>
-
             <div class="description">
                 Генерация видео и изменение существующего видео. Оживление рисунка.
             </div>
         </div>
-
     </div>
 
     <div class="card">
-
-        <img src="risunok.png">
-
+        <img src="./risunok.png" alt="Рисунок">
         <div class="overlay"></div>
-
         <button class="favorite">☆</button>
-
         <div class="content">
             <div class="title">
                 Рисунок
             </div>
-
             <div class="description">
                 Преобразование и дополнение рисунка.
             </div>
         </div>
-
     </div>
 
     <div class="card">
-
-        <img src="photo.png">
-
+        <img src="./photo.png" alt="Фото">
         <div class="overlay"></div>
-
         <button class="favorite">☆</button>
-
         <div class="content">
             <div class="title">
                 Фото генерация
             </div>
-
             <div class="description">
                 Генерация и преобразование фотографии.
             </div>
         </div>
-
     </div>
 
-</div>
-
     <div class="card">
-
-        <img src="school.png">
-
+        <img src="./school.png" alt="Учебный материал">
         <div class="overlay"></div>
-
         <button class="favorite">☆</button>
-
         <div class="content">
             <div class="title">
                 Учебный материал
             </div>
-
             <div class="description">
                 Углубленное погружение в материал.
             </div>
         </div>
-
     </div>
+
+</div>
 
 <script>
 
-let tg = window.Telegram.WebApp;
+document.querySelectorAll("img").forEach(img => {
+    img.onerror = function() {
+        this.src = "https://placehold.co/800x600/png?text=Image+Not+Found";
+    };
+});
 
+const tg = window.Telegram.WebApp;
 tg.expand();
 
-document.querySelectorAll('.favorite')
-.forEach(btn => {
-
+document.querySelectorAll('.favorite').forEach(btn => {
     btn.addEventListener('click', () => {
-
-        if(btn.innerHTML === '☆'){
-            btn.innerHTML = '★';
-        }else{
-            btn.innerHTML = '☆';
-        }
-
+        btn.textContent = btn.textContent === '☆' ? '★' : '☆';
     });
-
 });
 
 </script>
 
 </body>
-</html>
 </html>
