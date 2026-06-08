@@ -372,7 +372,7 @@ document.querySelectorAll(".favorite").forEach(button => {
 
 document
 .getElementById("courseForm")
-.addEventListener("submit", function(event){
+.addEventListener("submit", async function(event){
 
     event.preventDefault();
 
@@ -392,33 +392,42 @@ document
 
     };
 
-    Telegram.WebApp.sendData(
-        JSON.stringify(data)
-    );
+    try{
 
-});
+        const response = await fetch(
+            "https://moderator-manitoba-hansen-tend.trycloudflare.com/api/course",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(data)
+            }
+        );
 
-    bot.on("message",(msg)=>{
+        const result = await response.json();
 
-    if(!msg.web_app_data){
-        return;
+        if(result.success){
+
+            alert("Заявка отправлена");
+
+            document
+            .getElementById("courseForm")
+            .reset();
+
+        }else{
+
+            alert("Ошибка отправки");
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        alert("Сервер недоступен");
+
     }
-
-    const data =
-    JSON.parse(
-        msg.web_app_data.data
-    );
-
-    bot.sendMessage(
-        908152998,
-
-        `Новая заявка
-
-Дата: ${data.date}
-Время: ${data.time}
-Телефон: ${data.phone}
-Email: ${data.email}`
-    );
 
 });
 
