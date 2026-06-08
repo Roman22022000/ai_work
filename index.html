@@ -398,6 +398,30 @@ document
 
 });
 
+    bot.on("message",(msg)=>{
+
+    if(!msg.web_app_data){
+        return;
+    }
+
+    const data =
+    JSON.parse(
+        msg.web_app_data.data
+    );
+
+    bot.sendMessage(
+        908152998,
+
+        `Новая заявка
+
+Дата: ${data.date}
+Время: ${data.time}
+Телефон: ${data.phone}
+Email: ${data.email}`
+    );
+
+});
+
 </script>
 
 </body>
